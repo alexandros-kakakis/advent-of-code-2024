@@ -34,7 +34,7 @@ TODO: replace each incorrect occurance with the correct rule
 - Get middle number of updated rules
 """
 
-incorrect_update = "61,13,29"
+update = "97,13,75,29,47"
 
 for rule in rules:
     first_number, second_number = rule.split('|')
@@ -42,9 +42,15 @@ for rule in rules:
     single_rule_regex = f"{second_number},.*{first_number}"
     replacement_string = f"{first_number},{second_number}"
     
-    start_index = re.search(single_rule_regex, incorrect_update).start() if re.search(single_rule_regex, incorrect_update) else -1
+    start_index = re.search(single_rule_regex, update).start() if re.search(single_rule_regex, update) else -1
     if start_index != -1:
-        print(
-            single_rule_regex,
-            incorrect_update[start_index:start_index+2]
+        print(update)
+        update = update.replace(
+            f",{first_number}",
+            ""
         )
+        update = update.replace(
+            second_number,
+            replacement_string
+        )
+        print(update)
