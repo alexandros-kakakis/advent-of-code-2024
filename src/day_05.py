@@ -24,33 +24,35 @@ incorrect_updates = [
     update for update in updates if bool(re.search(rule_regex, update))
 ]
 
-"""
-TODO: replace each incorrect occurance with the correct rule
-- Iterate over rules:
-    - replace first number
-    - delete second number
-    - update update
-- Check if updated rules pass rule_regex
-- Get middle number of updated rules
-"""
+def correct_update(update, rules, rule_regex):
+    for rule in rules:
+        first_number, second_number = rule.split('|')
+        
+        single_rule_regex = f"{second_number},.*{first_number}"
+        replacement_string = f"{first_number},{second_number}"
+        
+        start_index = re.search(single_rule_regex, update).start() if re.search(single_rule_regex, update) else -1
+        if start_index != -1:
 
-update = "97,13,75,29,47"
+            update = update.replace(
+                f",{first_number}",
+                ""
+            )
+            update = update.replace(
+                second_number,
+                replacement_string
+            )
 
-for rule in rules:
-    first_number, second_number = rule.split('|')
-    
-    single_rule_regex = f"{second_number},.*{first_number}"
-    replacement_string = f"{first_number},{second_number}"
-    
-    start_index = re.search(single_rule_regex, update).start() if re.search(single_rule_regex, update) else -1
-    if start_index != -1:
-        print(update)
-        update = update.replace(
-            f",{first_number}",
-            ""
-        )
-        update = update.replace(
-            second_number,
-            replacement_string
-        )
-        print(update)
+    if re.search(rule_regex, update):
+        return correct_update(update, rules, rule_regex)
+    else:
+        return update
+
+print(
+    "Solution Part Two: ",
+    sum(
+        return_middle_number(
+            correct_update(update, rules, rule_regex)
+        ) for update in incorrect_updates
+    )
+)
