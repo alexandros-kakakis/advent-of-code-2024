@@ -5,16 +5,12 @@ with open("data/puzzle_input_day_09.txt", "r") as file:
     free_space_list = [data[x] for x in range(len(data)) if x % 2 == 1] + [0]
     id_number_list = [str(x) for x in range(len(block_size_list))]
 
-layout = ""
+layout = []
 for block_size, free_space, id_number in zip(block_size_list, free_space_list, id_number_list):
-    layout += block_size * id_number
+    layout += block_size * [id_number]
     layout += free_space * "."
 
-layout = list(layout)
 last_non_dot = len(layout) - 1
-
-while last_non_dot >= 0 and layout[last_non_dot] == '.':
-    last_non_dot -= 1
 
 i = 0
 while i < last_non_dot:
@@ -24,8 +20,6 @@ while i < last_non_dot:
         while last_non_dot > i and layout[last_non_dot] == '.':
             last_non_dot -= 1
     i += 1
-
-layout = ''.join(layout)
 
 print(
     "Solution Part One:",
