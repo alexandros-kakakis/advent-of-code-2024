@@ -56,21 +56,13 @@ def calculate_sides(top_perimeter, left_perimeter, bottom_perimeter, right_perim
         len(return_non_touching_perimeter(bottom_perimeter, position="bottom")) + \
         len(return_non_touching_perimeter(right_perimeter, position="right"))
 
-def return_non_touching_perimeter(perimeters, position): ## TODO: Fix this
-    ## aanname: van links naar rechts, van boven naar beneden
-    if position == "top":
+def return_non_touching_perimeter(perimeters, position):
+    if position in ["top", "bottom"]:
         touching_perimeters = [(perimeter[0], perimeter[1] + 1) for perimeter in perimeters]
         return [perimeter for perimeter in perimeters if perimeter not in touching_perimeters]
-    elif position == "left":
+    else:
         touching_perimeters = [(perimeter[0] + 1, perimeter[1]) for perimeter in perimeters]
         return [perimeter for perimeter in perimeters if perimeter not in touching_perimeters]
-    elif position == "bottom":
-        touching_perimeters = [(perimeter[0], perimeter[1] + 1) for perimeter in perimeters]
-        return [perimeter for perimeter in perimeters if perimeter not in touching_perimeters]
-    elif position == "right":
-        touching_perimeters = [(perimeter[0] + 1, perimeter[1]) for perimeter in perimeters]
-        return [perimeter for perimeter in perimeters if perimeter not in touching_perimeters]
-        
 
 total_price_part_one, total_price_part_two = 0, 0
 coordinates_to_check = [coord for coord in map.keys()]
