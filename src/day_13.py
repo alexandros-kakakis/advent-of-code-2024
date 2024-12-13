@@ -13,15 +13,25 @@ claw_machines = [
     for claw_machine in claw_machines
 ]
 
-total_tokens = 0
-for claw_machine in claw_machines:
-    button_a, button_b, prize_location = claw_machine
-    solution = np.linalg.solve(
-        np.column_stack((button_a, button_b)),
-        prize_location
-    )
-    if not np.all(np.isclose(solution, np.round(solution))):
-        continue
-    total_tokens += int(3 * solution[0] + 1 * solution[1])
+def calculate_total_tokens(claw_machines, prize_offset=0):
+    total_tokens = 0
+    for claw_machine in claw_machines:
+        button_a, button_b, prize_location = claw_machine
+        prize_location += prize_offset
+        solution = np.linalg.solve(
+            np.column_stack((button_a, button_b)),
+            prize_location
+        )
+        if np.all(np.isclose(solution, np.round(solution), rtol=1e-14, atol=1e-8)):
+            total_tokens += int(3 * round(solution[0]) + 1 * round(solution[1]))
+    return total_tokens
 
-print(total_tokens)
+print(
+    "Solution Part One:",
+    calculate_total_tokens(claw_machines)
+)
+
+print(
+    "Solution Part Two:",
+    calculate_total_tokens(claw_machines, prize_offset=10000000000000)
+)
